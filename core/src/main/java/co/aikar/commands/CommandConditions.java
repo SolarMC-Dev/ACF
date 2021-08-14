@@ -23,7 +23,9 @@
 
 package co.aikar.commands;
 
+/* Solar start
 import co.aikar.util.Table;
+*/ // Solar end
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -38,7 +40,11 @@ public class CommandConditions <
     > {
     private CommandManager manager;
     private Map<String, Condition<I>> conditions = new HashMap<>();
+// Solar start
+    private Map<Class<?>, Map<String, ParameterCondition<?, ?, ?>>> paramConditions = new HashMap<>();
+/*
     private Table<Class<?>, String, ParameterCondition<?, ?, ?>> paramConditions = new Table<>();
+*/ // Solar end
 
     CommandConditions(CommandManager manager) {
         this.manager = manager;
@@ -50,7 +56,11 @@ public class CommandConditions <
 
     public <P> ParameterCondition addCondition(Class<P> clazz, @NotNull String id,
                                                @NotNull ParameterCondition<P, CEC, I> handler) {
+// Solar start
+        return this.paramConditions.computeIfAbsent(clazz, (c) -> new HashMap<>()).put(id.toLowerCase(Locale.ENGLISH), handler);
+/*
         return this.paramConditions.put(clazz, id.toLowerCase(Locale.ENGLISH), handler);
+*/ // Solar end
     }
 
     void validateConditions(CommandOperationContext context) throws InvalidCommandArgument {
@@ -106,7 +116,7 @@ public class CommandConditions <
             Class<?> cls = execContext.getParam().getType();
             String id = split[0].toLowerCase(Locale.ENGLISH);
             do {
-                condition = this.paramConditions.get(cls, id);
+                condition = this.paramConditions.getOrDefault(cls, Map.of()).get(id); // Solar
                 if (condition == null && cls.getSuperclass() != null && cls.getSuperclass() != Object.class) {
                     cls = cls.getSuperclass();
                 } else {

@@ -25,7 +25,7 @@ package co.aikar.commands;
 
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.locales.MessageKeyProvider;
-import co.aikar.util.Table;
+//import co.aikar.util.Table; // Solar
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -71,7 +71,7 @@ public abstract class CommandManager<
     protected final CommandConditions<I, CEC, CC> conditions = new CommandConditions<>(this);
     protected ExceptionHandler defaultExceptionHandler = null;
     boolean logUnhandledExceptions = true;
-    protected Table<Class<?>, String, Object> dependencies = new Table<>();
+    protected Map<Class<?>, Map<String, Object>> dependencies = new HashMap<>(); // Solar
     protected CommandHelpFormatter helpFormatter = new CommandHelpFormatter(this);
 
     protected boolean usePerIssuerLocale = false;
@@ -512,11 +512,20 @@ public abstract class CommandManager<
      * @throws IllegalStateException when there is already an instance for the provided class registered
      */
     public <T> void registerDependency(Class<? extends T> clazz, String key, T instance) {
+/* Solar start
         if (dependencies.containsKey(clazz, key)) {
             throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
         }
 
         dependencies.put(clazz, key, instance);
+*/
+        Map<String, Object> forClass = dependencies.computeIfAbsent(clazz, (c) -> new HashMap<>());
+        if (forClass.containsKey(key)) {
+            throw new IllegalStateException("There is already an instance of " + clazz.getName() + " with the key " + key + " registered!");
+        }
+
+        forClass.put(key, instance);
+// Solar end
     }
 
     /**
@@ -532,7 +541,7 @@ public abstract class CommandManager<
                 if (annotations.hasAnnotation(field, Dependency.class)) {
                     String dependency = annotations.getAnnotationValue(field, Dependency.class);
                     String key = (key = dependency).isEmpty() ? field.getType().getName() : key;
-                    Object object = dependencies.row(field.getType()).get(key);
+                    Object object = dependencies.getOrDefault(field.getType(), Map.of()).get(key); // Solar
                     if (object == null) {
                         throw new UnresolvedDependencyException("Could not find a registered instance of " +
                                 field.getType().getName() + " with key " + key + " for field " + field.getName() +

@@ -23,8 +23,14 @@
 
 package co.aikar.commands;
 
+// Solar start
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import java.time.Duration;
+/*
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
+*/ // Solar end
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -55,12 +61,19 @@ final class ACFPatterns {
     private ACFPatterns() {
     }
 
+// Solar start
+    static final Cache<String, Pattern> patternCache = Caffeine.newBuilder()
+            .maximumSize(200)
+            .expireAfterAccess(Duration.ofHours(1L))
+            .build();
+/*
     @SuppressWarnings("Convert2MethodRef")
     static final Map<String, Pattern> patternCache = ExpiringMap.builder()
             .maxSize(200)
             .expiration(1, TimeUnit.HOURS)
             .expirationPolicy(ExpirationPolicy.ACCESSED)
             .build();
+*/ // Solar end
 
     /**
      * Gets a pattern and compiles it.
@@ -73,6 +86,6 @@ final class ACFPatterns {
      * @return The pattern which has been cached.
      */
     public static Pattern getPattern(String pattern) {
-        return patternCache.computeIfAbsent(pattern, s -> Pattern.compile(pattern));
+        return patternCache.get(pattern, Pattern::compile); // Solar - use caffeine
     }
 }

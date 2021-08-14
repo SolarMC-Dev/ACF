@@ -24,8 +24,10 @@
 package co.aikar.commands;
 
 import co.aikar.commands.apachecommonslang.ApacheCommonsExceptionUtil;
+/* Solar start
 import co.aikar.timings.lib.MCTiming;
 import co.aikar.timings.lib.TimingManager;
+*/ // Solar end
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -75,7 +77,7 @@ public class BukkitCommandManager extends CommandManager<
     @SuppressWarnings("WeakerAccess")
     protected final Plugin plugin;
     private final CommandMap commandMap;
-    private final TimingManager timingManager;
+//    private final TimingManager timingManager; // Solar
     private final BukkitTask localeTask;
     private final Logger logger;
     public final Integer mcMinorVersion;
@@ -84,7 +86,7 @@ public class BukkitCommandManager extends CommandManager<
     protected Map<String, BukkitRootCommand> registeredCommands = new HashMap<>();
     protected BukkitCommandContexts contexts;
     protected BukkitCommandCompletions completions;
-    MCTiming commandTiming;
+//    MCTiming commandTiming; // Solar
     protected BukkitLocales locales;
     private boolean cantReadLocale = false;
     protected boolean autoDetectFromClient = true;
@@ -94,8 +96,10 @@ public class BukkitCommandManager extends CommandManager<
         this.plugin = plugin;
         String prefix = this.plugin.getDescription().getPrefix();
         this.logger = Logger.getLogger(prefix != null ? prefix : this.plugin.getName());
+/* Solar start
         this.timingManager = TimingManager.of(plugin);
         this.commandTiming = this.timingManager.of("Commands");
+*/ // Solar end
         this.commandMap = hookCommandMap();
         this.formatters.put(MessageType.ERROR, defaultFormatter = new BukkitMessageFormatter(ChatColor.RED, ChatColor.YELLOW, ChatColor.RED));
         this.formatters.put(MessageType.SYNTAX, new BukkitMessageFormatter(ChatColor.YELLOW, ChatColor.GREEN, ChatColor.WHITE));
@@ -145,7 +149,11 @@ public class BukkitCommandManager extends CommandManager<
     private CommandMap hookCommandMap() {
         CommandMap commandMap = null;
         try {
+// Solar start
             Server server = Bukkit.getServer();
+            commandMap = server.getCommandMap();
+            this.knownCommands = commandMap.getKnownCommands();
+/*
             Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");
             getCommandMap.setAccessible(true);
             commandMap = (CommandMap) getCommandMap.invoke(server);
@@ -162,6 +170,7 @@ public class BukkitCommandManager extends CommandManager<
             knownCommands.setAccessible(true);
             //noinspection unchecked
             this.knownCommands = (Map<String, Command>) knownCommands.get(commandMap);
+*/ // Solar end
         } catch (Exception e) {
             this.log(LogLevel.ERROR, "Failed to get Command Map. ACF will not function.");
             ACFUtil.sneaky(e);
@@ -304,6 +313,15 @@ public class BukkitCommandManager extends CommandManager<
         if (!player.isOnline() || cantReadLocale) {
             return;
         }
+// Solar start - future-proof player.locale();
+        try {
+            Player.class.getMethod("locale");
+            throw new IllegalStateException("The Player#locale method exists, please re-compile me to use it");
+        } catch (NoSuchMethodException ignored) {
+            cantReadLocale = true;
+            if (true) return;
+        }
+// Solar end
         try {
             Field entityField = getEntityField(player);
             if (entityField == null) {
@@ -330,9 +348,11 @@ public class BukkitCommandManager extends CommandManager<
         }
     }
 
+/* Solar start
     public TimingManager getTimings() {
         return timingManager;
     }
+*/ // Solar end
 
     @Override
     public RootCommand createRootCommand(String cmd) {

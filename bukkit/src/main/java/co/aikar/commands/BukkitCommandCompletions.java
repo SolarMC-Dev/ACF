@@ -24,7 +24,7 @@
 package co.aikar.commands;
 
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate; // Solar
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
