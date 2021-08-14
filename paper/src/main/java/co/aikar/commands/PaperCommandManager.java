@@ -52,6 +52,7 @@ public class PaperCommandManager extends BukkitCommandManager {
         super.enableUnstableAPI(api);
 
         if ("brigadier".equals(api) && brigadierAvailable) {
+            org.slf4j.LoggerFactory.getLogger(getClass()).warn("Please recompile me and re-add brigadier support"); // Solar
             new PaperBrigadierManager(plugin, this);
         }
     }

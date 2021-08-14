@@ -218,8 +218,8 @@
         <module>brigadier</module>
 Solar end -->
         <module>bukkit</module>
-<!-- Solar start
         <module>paper</module>
+<!-- Solar start
         <module>bungee</module>
         <module>sponge</module>
         <module>jda</module>

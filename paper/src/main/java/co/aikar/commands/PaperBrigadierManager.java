@@ -23,8 +23,10 @@
 
 package co.aikar.commands;
 
+/* Solar start
 import com.destroystokyo.paper.brigadier.BukkitBrigadierCommandSource;
 import com.destroystokyo.paper.event.brigadier.CommandRegisteredEvent;
+*/ // Solar end
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,10 +43,15 @@ import org.bukkit.plugin.Plugin;
 public class PaperBrigadierManager implements Listener {
 
     private final PaperCommandManager manager;
+/* Solar start
     private final ACFBrigadierManager<BukkitBrigadierCommandSource> brigadierManager;
+*/ // Solar end
 
     public PaperBrigadierManager(Plugin plugin, PaperCommandManager manager) {
         manager.verifyUnstableAPI("brigadier");
+// Solar start - comment out entire class
+        this.manager = manager;
+/*
         manager.log(LogLevel.INFO, "Enabled Brigadier Support!");
 
         this.manager = manager;
@@ -74,5 +81,6 @@ public class PaperBrigadierManager implements Listener {
 
     private boolean checkPermRoot(RootCommand rootCommand, BukkitBrigadierCommandSource sender) {
         return rootCommand.hasAnyPermission(manager.getCommandIssuer(sender.getBukkitSender()));
+*/ // Solar end
     }
 }

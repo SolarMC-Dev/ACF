@@ -28,7 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>co.aikar</groupId>
+        <groupId>gg.solarmc.acf</groupId> <!-- Solar -->
         <artifactId>acf-parent</artifactId>
         <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
         <relativePath>../pom.xml</relativePath>
@@ -41,15 +41,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>co.aikar</groupId>
+            <groupId>gg.solarmc.acf</groupId> <!-- Solar -->
             <artifactId>acf-bukkit</artifactId>
-            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <version>${project.version}</version> <!-- Solar -->
             <scope>compile</scope>
         </dependency>
+<!-- Solar start
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-brigadier</artifactId>
-            <version><!--VERSION-->0.5.0-SNAPSHOT<!--VERSION--></version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -70,5 +71,13 @@
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+-->
+        <dependency>
+            <groupId>gg.solarmc.paper</groupId>
+            <artifactId>solarpaper-api</artifactId>
+            <version>1.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+<!-- Solar end -->
     </dependencies>
 </project>
