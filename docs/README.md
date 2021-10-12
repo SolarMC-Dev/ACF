@@ -1,4 +1,10 @@
 # Annotation Command Framework (ACF)
+
+## Fork Status
+
+The original ACF is licensed under the MIT license. Modifications made in this fork are licensed
+under the GNU Lesser General Public License, v3 or later.
+
 ## Purpose
 This is the Framework created for [Empire Minecraft](https://ref.emc.gs/Aikar?gac=commands.github).
 

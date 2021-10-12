@@ -60,13 +60,13 @@
     <parent>
         <groupId>gg.solarmc</groupId>
         <artifactId>solar-parent</artifactId>
-        <version>0.6.2</version>
+        <version>1.0.0</version>
     </parent>
 
     <repositories>
         <repository>
-            <id>solar-releases</id>
-            <url>https://mvn-repo.solarmc.gg/releases</url>
+            <id>solar-repo</id>
+            <url>https://repo.solarmc.gg/mvn</url>
         </repository>
     </repositories>
 <!-- Solar end -->
